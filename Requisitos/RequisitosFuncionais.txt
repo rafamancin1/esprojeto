@@ -1,0 +1,24 @@
+Requisitos Funcionais
+
+RF01: O software deve permitir que o usuário cadastre filiais
+RF02: O software deve permitir que o usuário cadastre funcionários
+RF02.1: O software deve permitir que o usuário cadastre representantes
+RF02.2: O software deve permitir que o usuário cadastre engenheiros
+RF02.3: O software deve permitir que o usuário cadastre técnicos
+RF03: O software deve permitir que o usuário cadastre lotes de produtos
+RF04: O software deve permitir que o usuário cadastre clientes
+RF05: O software deve permitir que o usuário cadastre matérias prima
+RF06: O software deve permitir que o usuário cadastre fornecedores
+RF07: O software deve permitir que o usuário consulte filiais cadastradas
+RF08: O software deve permitir que o usuário consulte funcionários cadastrados
+RF08.1: O software deve permitir que o usuário consulte representantes cadastrados
+RF08.2: O software deve permitir que o usuário consulte engenheiros cadastrados
+RF08.3: O software deve permitir que o usuário consulte técnicos cadastrados
+RF09: O software deve permitir que o usuário consulte lotes de produtos cadastrados
+RF10: O software deve permitir que o usuário consulte clientes cadastrados
+RF11: O software deve permitir que o usuário consulte matérias prima cadastradas
+RF12: O software deve permitir que o usuário consulte fornecedores cadastrados
+RF13: O software deve permitir que o usuário altere quaisquer dados cadastrados
+RF14: O software deve permitir que o usuário remova quaisquer dados cadastrados
+RF15: O software deve permitir a emissão de relatório de uma filial
+RF16: O software deve permitir a emissão de relatório de produtos
