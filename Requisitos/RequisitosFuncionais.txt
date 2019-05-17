@@ -38,3 +38,4 @@ RF23: O software deve permitir que o usuário remova matérias prima cadastrados
 RF24: O software deve permitir que o usuário remova fornecedores cadastrados
 RF25: O software deve permitir a emissão de relatório de uma filial
 RF26: O software deve permitir a emissão de relatório de produtos 
+RF27: O software deve exigir que o usuário faça login
