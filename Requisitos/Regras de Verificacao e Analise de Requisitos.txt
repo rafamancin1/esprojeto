@@ -1,10 +1,10 @@
-- Evitar as palavras: E, OU, SOMENTE SE, EXCETO, SE NECESSÁRIO, MAS, CONTUDO, ENTRETANDO, USUALMENTE,
+- Evitar as seguintes palavras: E, OU, SOMENTE SE, EXCETO, SE NECESSÁRIO, MAS, CONTUDO, ENTRETANDO, USUALMENTE,
 GERALMENTE, FREQUENTEMENTE, TIPICAMENTE, AMIGÁVEL, VERSÁTIL, FLEXÍVEL, APROXIMADAMENTE,
-TÃO LOGO QUANTO POSSÍVEL, TALVEZ, PROVAVELMENTE ou palavras que forneçam a mesma idéia que essas;
+TÃO LOGO QUANTO POSSÍVEL, TALVEZ, PROVAVELMENTE ou palavras que forneçam a mesma idéia que essas.
 
-- Evitar ambiguidades
+- Evitar ambiguidades.
 
-- Expressar os requisitos de forma clara, direta e objetiva
+- Expressar os requisitos de forma clara, direta e objetiva.
 
 - Evitar sentenças grandes, optando pela fragmentação, caso necessário, em dois ou mais requisitos.
 
