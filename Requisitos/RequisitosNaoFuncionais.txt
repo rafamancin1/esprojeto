@@ -1,0 +1,5 @@
+Requisitos não funcionais
+
+RNF01: O software deve emitir o relatório de filiais em menos de 2 segundos
+RNF02: O software deve manter seu banco de dados seguro
+RNF03: O software deve ter uma disponibilidade mensal de pelo menos 99%
