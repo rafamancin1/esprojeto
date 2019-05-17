@@ -18,7 +18,23 @@ RF09: O software deve permitir que o usuário consulte lotes de produtos cadastr
 RF10: O software deve permitir que o usuário consulte clientes cadastrados
 RF11: O software deve permitir que o usuário consulte matérias prima cadastradas
 RF12: O software deve permitir que o usuário consulte fornecedores cadastrados
-RF13: O software deve permitir que o usuário altere quaisquer dados cadastrados
-RF14: O software deve permitir que o usuário remova quaisquer dados cadastrados
-RF15: O software deve permitir a emissão de relatório de uma filial
-RF16: O software deve permitir a emissão de relatório de produtos
+RF13: O software deve permitir que o usuário altere os dados de filiais cadastradas
+RF14: O software deve permitir que o usuário altere os dados de funcionários cadastrados
+RF14.1: O software deve permitir que o usuário altere os dados de representantes cadastrados
+RF14.2: O software deve permitir que o usuário altere os dados de engenheiros cadastrados
+RF14.3: O software deve permitir que o usuário altere os dados de técnicos cadastrados
+RF15: O software deve permitir que o usuário altere os dados de lotes de produtos cadastrados
+RF16: O software deve permitir que o usuário altere os dados de clientes cadastrados
+RF17: O software deve permitir que o usuário altere os dados de fornecedores cadastrados
+RF18: O software deve permitir que o usuário altere os dados de matérias prima cadastradas
+RF19: O software deve permitir que o usuário remova filiais cadastradas
+RF20: O software deve permitir que o usuário remova funcionários cadastrados
+RF20.1: O software deve permitir que o usuário remova representantes cadastrados
+RF20.2: O software deve permitir que o usuário remova engenheiros cadastrados
+RF20.3: O software deve permitir que o usuário remova técnicos cadastrados 
+RF21: O software deve permitir que o usuário remova lotes de produtos cadastrados
+RF22: O software deve permitir que o usuário remova clientes cadastrados
+RF23: O software deve permitir que o usuário remova matérias prima cadastrados
+RF24: O software deve permitir que o usuário remova fornecedores cadastrados
+RF25: O software deve permitir a emissão de relatório de uma filial
+RF26: O software deve permitir a emissão de relatório de produtos 
