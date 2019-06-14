@@ -1,0 +1,9 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+
+  <h2>Ocorreu um erro no cadastro</h2>
+  <li> <a href="{% url 'cadastro_funcionario' %}">Tentar novamente</a> </li>
+  <li> <a href="{% url 'cadastro' %}">Voltar para o Menu de Cadastros</a> </li>
+  <li> <a href="{% url 'menu_inicial' %}">Voltar para o Menu Inicial</a></li>
+
+{% endblock content %}

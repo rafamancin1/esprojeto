@@ -1,0 +1,9 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <form class="remocao" action="{% url 'remocao_funcionario' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="remover" value="Confirmar Remoção">
+  </form>
+
+{% endblock content %}

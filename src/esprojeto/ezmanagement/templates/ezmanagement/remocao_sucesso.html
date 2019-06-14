@@ -1,0 +1,8 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <h2>Remoção realizada com sucesso!</h2>
+  <li> <a href="{% url 'menu_inicial' %}">Voltar para o Menu Inicial</a></li>
+  <li> <a href="{% url 'remocao' %}">Voltar para o Menu de Remoção</a> </li>
+  <li> <a href="{% url 'remocao_funcionario' %}">Remover outro funcionário</a></li>
+
+{% endblock content %}

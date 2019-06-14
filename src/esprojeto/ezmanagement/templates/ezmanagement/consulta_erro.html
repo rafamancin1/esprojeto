@@ -1,0 +1,7 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <h2>O CPF informado não corresponde ao de um funcionário cadastrado</h2>
+  <li> <a href="{% url 'consulta_funcionario' %}">Consultar outro funcionário</a> </li>
+  <li> <a href="{% url 'menu_inicial' %}">Voltar para o menu inicial</a> </li>
+
+{% endblock content %}

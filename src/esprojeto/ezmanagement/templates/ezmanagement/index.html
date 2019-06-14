@@ -1,0 +1,8 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+    <form class="login" action="{% url 'index' %}" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Login">
+    </form>
+{% endblock content %}
