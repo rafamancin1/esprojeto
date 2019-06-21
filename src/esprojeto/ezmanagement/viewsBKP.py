@@ -1,16 +1,10 @@
 from django.shortcuts import render
 from .models import *
 from .forms import *
-from .dbaux import *
-
-#Varíaveis de estado da sessão
-
-CNPJ_FILIAL = None
-
+from .consulta import *
 
 # Create your views here.
 def index(request):
-    global CNPJ_FILIAL
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -19,16 +13,10 @@ def index(request):
             context = {'nomeFunc' : email}
             try:
                 func = Adm_Local.objects.get(email_P=email, senha_adm=senha)
-                CNPJ_FILIAL = func.filialAssociada.cnpjFilial
                 return render(request, 'ezmanagement/menu_inicial.html', context)
             except Adm_Local.DoesNotExist:
-                try:
-                    func = Representante.objects.get(email_P=email, senha_repr=senha)
-                    CNPJ_FILIAL = func.cnpjFilial
-                    return render(request, 'ezmanagement/menu_inicial.html', context)
-                except Representante.DoesNotExist:
-                    form = LoginForm()
-                    return render(request, 'ezmanagement/login_erro.html', {'form' : form})
+                form = LoginForm()
+                return render(request, 'ezmanagement/login_erro.html', {'form' : form})
     else:
         form = LoginForm()
         return render(request, 'ezmanagement/index.html', {'form' : form})
@@ -48,34 +36,6 @@ def alteracao(request):
 def consulta(request):
     return render(request, 'ezmanagement/menu_consulta.html')
 
-def relatorio(request):
-    global CNPJ_FILIAL
-
-    listaFunc = lista_funcionarios()
-    listaProdutos = lista_produtos()
-    listaFornecedores = lista_fornecedores()
-    filial = consultar_filial(CNPJ_FILIAL)
-
-    out = "Informações sobre a filial<br>"
-    out += "CNPJ | Endereço<br>"
-    out += filial.cnpjFilial + " " + filial.endereco + "<br><br>"
-    out += "Lista de funcionários<br>"
-    out += "Nome | CPF | Salário<br>"
-    for f in listaFunc:
-        out += f.nome_P + " " + f.cpf_P + " " + str(f.salario_Func) + "<br><br>"
-    out += "Lista de produtos<br>"
-    out += "Nome | Preço de venda<br>"
-    for p in listaProdutos:
-        out += p.nome_produto + " " + str(p.preco_de_venda) + "<br><br>"
-    out += "Lista de Fornecedores<br>"
-    out += "Nome | CNPJ<br>"
-    for f in listaFornecedores:
-        out += f.nome_P + " " + f.cnpj_P + "<br>"
-    return render(request, 'ezmanagement/relatorio.html', {'out' : out})
-
-
-
-
 def cadastro_funcionario(request):
     return render(request, "ezmanagement/cadastro_funcionario.html")
 
@@ -84,7 +44,7 @@ def cadastro_tecnico(request):
         form = CadastroTecForm(request.POST)
         if form.is_valid():
             func = Tecnico(**form.cleaned_data)
-            cnpjAssoc = form.cleaned_data["cnpj_filial"]
+            cnpjAssoc = form.cleaned_data["cnpjFilial"]
             filialAssoc = consultar_filial(cnpjAssoc)
             if filialAssoc != None:
                 func.filialAssociada = filialAssoc
@@ -110,7 +70,7 @@ def alteracao_funcionario(request):
         if form.is_valid():
             cpf = form.cleaned_data["cpf_P"]
             campo = form.cleaned_data["campo"]
-            novoValor = form.cleaned_data["novo_valor"]
+            novoValor = form.cleaned_data["novoValor"]
             func = consultar_funcionario(cpf)
             if func == None:
                 return render(request, 'ezmanagement/alteracao_erro.html')
