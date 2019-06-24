@@ -9,3 +9,6 @@ Os arquivos deste projeto estão dividos entre as pastas "Protótipo", "Requisit
 3. Use modo indicativo na linha do assunto
 4. Limite tamanho do corpo para 72 caracteres
 5. Use o corpo para explicar o porquê/como
+
+## Design Patterns
+Um dos Design Patterns que ocorrem com o uso da tecnologia Django, e neste projeto, é a nomeação das urls especificadas no arquivo urls.py. Desta forma, é possível utilizá-las com maior facilidade, como, por exemplo, em arquivos html, apenas com a utilização da tag {% url *nome_da_url* %} no meio do código html.
