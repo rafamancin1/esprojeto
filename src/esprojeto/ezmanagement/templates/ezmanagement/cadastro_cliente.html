@@ -1,10 +1,10 @@
 {% extends "ezmanagement/base.html" %}
 {% block content %}
-  <form class="cadastro" action="{% url 'cadastro_tecnico' %}" method="post">
+  <form class="cadastro" action="{% url 'cadastro_cliente' %}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Cadastrar">
   </form>
-  <a href="{% url 'cadastro_funcionario' %}">Voltar</a>
+  <a href="{% url 'cadastro' %}">Voltar</a>
 
 {% endblock content %}

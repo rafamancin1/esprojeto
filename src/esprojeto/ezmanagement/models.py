@@ -5,7 +5,7 @@ from django.utils import timezone
 class Filial(models.Model):
     cnpjFilial = models.CharField(max_length=14)
     endereco = models.CharField(max_length=100)
-    qtdFunc = models.IntegerField()
+    qtdFunc = models.IntegerField(default=0)
 
 class Pessoa(models.Model):
     nome_P = models.CharField(max_length=50, default='')
@@ -37,6 +37,9 @@ class Funcionario(Pessoa_Fisica):
     class Meta:
         abstract = True
 
+class Contrato(Funcionario):
+    data_validade = models.DateTimeField('data de validade', default=timezone.now())
+
 class Adm_Local(Funcionario):
     senha_adm = models.CharField(max_length=16,default='')
 
@@ -57,6 +60,7 @@ class Fornecedor(Pessoa_Juridica):
 
 class Materia_Prima(models.Model):
     nome_mat = models.CharField(max_length=50,default='')
+    custo_mat = models.FloatField(default=0.0)
     fornecedor_assoc = models.ForeignKey(Fornecedor, on_delete=models.CASCADE)
 
 class Produto(models.Model):
@@ -65,11 +69,12 @@ class Produto(models.Model):
     nome = models.CharField(max_length=50,default='')
     mat_prima_necessaria = models.ForeignKey(Materia_Prima, on_delete=models.CASCADE)
 
+class Lote_Produto(models.Model):
+    qtd_produtos = models.IntegerField(default=0)
+    data_validade = models.DateTimeField('data de validade', default=timezone.now())
+    data_producao = models.DateTimeField('data de produção', default=timezone.now())
+    preco_lote = models.FloatField()
+    produto_assoc = models.ForeignKey(Produto, on_delete=models.CASCADE)
+
 class Cliente(Pessoa_Juridica):
     pass
-
-class Compras(models.Model):
-    cnpj_cliente = models.CharField(max_length=14, default='')
-    cnpj_filial = models.CharField(max_length=14, default='')
-    nome_produto = models.CharField(max_length=50, default='')
-    qtd_produto = models.IntegerField(default=0)

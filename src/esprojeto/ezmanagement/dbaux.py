@@ -20,6 +20,30 @@ def consultar_funcionario(cpf):
         pass
     return func
 
+def consultar_cliente(cnpj):
+    cliente = None
+    try:
+        cliente = Cliente.objects.get(cnpj_P=cnpj)
+    except Cliente.DoesNotExist:
+        pass
+    return cliente
+
+def consultar_materia(nome):
+    materia = None
+    try:
+        materia = Materia_Prima.objects.get(nome_mat=nome)
+    except Materia.DoesNotExist:
+        pass
+    return materia
+
+def consultar_contrato(cpf):
+    contrato = None
+    try:
+        contrato = Contrato.objects.get(cpf_P=cpf)
+    except Contrato.DoesNotExist:
+        pass
+    return contrato
+
 def lista_funcionarios():
     func = []
     try:
@@ -39,6 +63,13 @@ def lista_produtos():
         return Produto.objects.all()
     except:
         return []
+
+def lista_lotes():
+    try:
+        return Lote_Produto.objects.all()
+    except:
+        return []
+
 def lista_fornecedores():
     try:
         return Fornecedor.objects.all()

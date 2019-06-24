@@ -1,0 +1,10 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <form class="consulta" action="{% url 'consulta_cliente' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="consultar" value="Consultar Cliente">
+  </form>
+  <a href="{% url 'consulta' %}">Voltar</a>
+
+{% endblock content %}

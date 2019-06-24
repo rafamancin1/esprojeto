@@ -1,0 +1,10 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <form class="alteracao" action="{% url 'alteracao_materia_prima' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="alterar" value="Confirmar Alteração">
+  </form>
+  <a href="{% url 'alteracao' %}">Voltar</a>
+
+{% endblock content %}

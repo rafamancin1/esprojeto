@@ -1,0 +1,14 @@
+{% extends "ezmanagement/base.html" %}
+{% block content %}
+  <form class="alteracao" action="{% url 'alteracao_cliente' %}" method="post">
+    {% csrf_token %}
+    <h3>Campos que podem ser alterados:</h3>
+    <li>Nome</li>
+    <li>Endereço</li>
+    <li>Telefone</li>
+    {{ form }}
+    <input type="submit" name="alterar" value="Confirmar Alteração">
+  </form>
+  <a href="{% url 'alteracao' %}">Voltar</a>
+
+{% endblock content %}
