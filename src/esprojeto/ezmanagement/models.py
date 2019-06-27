@@ -14,6 +14,7 @@ class Pessoa(models.Model):
     email_P = models.CharField(max_length=50,default='')
     filialAssociada = models.ForeignKey(Filial, on_delete=models.CASCADE)
     cnpjFilial = models.CharField(max_length=14, default='')
+
     class Meta:
         abstract = True
 
@@ -32,7 +33,8 @@ class Funcionario(Pessoa_Fisica):
     salario_Func = models.FloatField(default=1000.00)
 
     def __str__(self):
-        return str(self.__dict__)
+        out = self.nome_P + " " + self.cpf_P + " " + str(self.salario_Func)
+        return out
 
     class Meta:
         abstract = True
@@ -42,18 +44,20 @@ class Contrato(Funcionario):
 
 class Adm_Local(Funcionario):
     senha_adm = models.CharField(max_length=16,default='')
+    def __str__(self):
+        return super().__str__(self)
 
 class Tecnico(Funcionario):
     areaAtuacao = models.CharField(max_length=20,default='')
     def __str__(self):
-        return str(self.__dict__)
+        return super().__str__() + " " + self.areaAtuacao + "\n"
 
 class Representante(Funcionario):
     estado_atuacao = models.CharField(max_length=50,default='')
     senha_repr = models.CharField(max_length=16,default='')
 
     def __str__(self):
-        return str(self.__dict__)
+        return super().__str__() + " " + self.estado_atuacao + "\n"
 
 class Fornecedor(Pessoa_Juridica):
     pass
@@ -68,6 +72,10 @@ class Produto(models.Model):
     preco_de_venda = models.FloatField(default=0.0)
     nome = models.CharField(max_length=50,default='')
     mat_prima_necessaria = models.ForeignKey(Materia_Prima, on_delete=models.CASCADE)
+
+    def __str__(self):
+        out = self.nome + " " + str(self.custo_de_producao) + " " + str(self.preco_de_venda) + "\n"
+        return out
 
 class Lote_Produto(models.Model):
     qtd_produtos = models.IntegerField(default=0)

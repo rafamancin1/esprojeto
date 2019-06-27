@@ -34,16 +34,16 @@ def menu_inicial(request):
     return render(request, 'ezmanagement/menu_inicial.html', {'nomeFunc' : request.session['nomeFunc']})
 
 def cadastro(request):
-    return render(request, 'ezmanagement/menu_cadastro.html')
+    return render(request, 'ezmanagement/cadastro/menu_cadastro.html')
 
 def remocao(request):
-    return render(request, 'ezmanagement/menu_remocao.html')
+    return render(request, 'ezmanagement/remocao/menu_remocao.html')
 
 def alteracao(request):
-    return render(request, 'ezmanagement/menu_alteracao.html')
+    return render(request, 'ezmanagement/alteracao/menu_alteracao.html')
 
 def consulta(request):
-    return render(request, 'ezmanagement/menu_consulta.html')
+    return render(request, 'ezmanagement/consulta/menu_consulta.html')
 
 def relatorio(request):
 
@@ -53,7 +53,7 @@ def relatorio(request):
     filial = consultar_filial(request.session['CNPJ_FILIAL'])
 
     out = "<h5>Informações sobre a filial</h5>"
-    out += "<table style=\"border-collapse: separate; border-spacing: 10px;\">"
+    out += "<table style=\"border-collapse: separate; border-spacing: 10px;\"t>"
     out += "<tr><td>CNPJ</td><td>Endereço</td><td>Nº de funcionários</td></tr>"
     out += "<tr><td>"+filial.cnpjFilial+"</td><td>"+filial.endereco+"</td><td>"+str(filial.qtdFunc)+"</td></tr>"
     out += "</table><br><br>"
@@ -82,7 +82,7 @@ def relatorio(request):
     return render(request, 'ezmanagement/relatorio.html', {'out' : out})
 
 def cadastro_funcionario(request):
-    return render(request, "ezmanagement/cadastro_funcionario.html")
+    return render(request, "ezmanagement/cadastro/cadastro_funcionario.html")
 
 def cadastro_tecnico(request):
     if request.method == "POST":
@@ -99,14 +99,14 @@ def cadastro_tecnico(request):
                 contrato = Contrato(**form.cleaned_data)
                 contrato.filialAssociada = filialAssoc
                 contrato.save()
-                return render(request, 'ezmanagement/cadastro_sucesso.html')
+                return render(request, 'ezmanagement/cadastro/cadastro_sucesso.html')
             else:
-                return render(request, 'ezmanagement/cadastro_erro.html')
+                return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
         else:
-            return render(request, 'ezmanagement/cadastro_erro.html')
+            return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
     else:
         form = CadastroTecForm()
-        return render(request, 'ezmanagement/cadastro_tecnico.html', {'form' : form})
+        return render(request, 'ezmanagement/cadastro/cadastro_tecnico.html', {'form' : form})
 
 def cadastro_representante(request):
     pass
@@ -123,12 +123,12 @@ def cadastro_cliente(request):
             if filialAssoc != None:
                 cliente.filialAssociada = filialAssoc
                 cliente.save()
-                return render(request, 'ezmanagement/cadastro_sucesso.html')
+                return render(request, 'ezmanagement/cadastro/cadastro_sucesso.html')
             else:
-                return render(request, 'ezmanagement/cadastro_erro.html')
+                return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
     else:
         form = CadastroPessoaJuridicaForm()
-        return render(request, 'ezmanagement/cadastro_cliente.html', {'form' : form})
+        return render(request, 'ezmanagement/cadastro/cadastro_cliente.html', {'form' : form})
 
 def alteracao_funcionario(request):
     if request.method == "POST":
@@ -139,7 +139,7 @@ def alteracao_funcionario(request):
             novoValor = form.cleaned_data["novoValor"]
             func = consultar_funcionario(cpf)
             if func == None:
-                return render(request, 'ezmanagement/alteracao_erro.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
             if campo == "Nome":
                 func.nome_P = novoValor
             elif campo == "Endereço":
@@ -147,14 +147,14 @@ def alteracao_funcionario(request):
             elif campo == "Telefone":
                 func.endereco_P = novoValor
             else:
-                return render(request, 'ezmanagement/alteracao_erro.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
             func.save()
-            return render(request, 'ezmanagement/alteracao_sucesso.html')
+            return render(request, 'ezmanagement/alteracao/alteracao_sucesso.html')
         else:
-            return render(request, 'ezmanagement/alteracao_erro.html')
+            return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
     else:
         form = AlteracaoFuncForm()
-        return render(request, 'ezmanagement/alteracao_funcionario.html', {'form' : form})
+        return render(request, 'ezmanagement/alteracao/alteracao_funcionario.html', {'form' : form})
 
 def alteracao_cliente(request):
     if request.method == "POST":
@@ -165,7 +165,7 @@ def alteracao_cliente(request):
             novoValor = form.cleaned_data["novoValor"]
             cliente = consultar_cliente(cnpj)
             if cliente == None:
-                return render(request, 'ezmanagement/alteracao_erro.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
             if campo == "Nome":
                 cliente.nome_P = novoValor
             elif campo == "Endereço":
@@ -173,14 +173,14 @@ def alteracao_cliente(request):
             elif campo == "Telefone":
                 cliente.endereco_P = novoValor
             else:
-                return render(request, 'ezmanagement/alteracao_erro.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
             cliente.save()
-            return render(request, 'ezmanagement/alteracao_sucesso.html')
+            return render(request, 'ezmanagement/alteracao/alteracao_sucesso.html')
         else:
-            return render(request, 'ezmanagement/alteracao_erro.html')
+            return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
     else:
         form = AlteracaoClienteForm()
-        return render(request, 'ezmanagement/alteracao_cliente.html', {'form' : form})
+        return render(request, 'ezmanagement/alteracao/alteracao_cliente.html', {'form' : form})
 
 def alteracao_materia_prima(request):
     global MARGEM_LUCRO
@@ -202,12 +202,12 @@ def alteracao_materia_prima(request):
                         p.save()
                 mat.custo_mat = custo
                 mat.save()
-                return render(request, 'ezmanagement/alteracao_sucesso.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_sucesso.html')
             else:
-                return render(request, 'ezmanagement/alteracao_erro.html')
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
     else:
         form = AlteracaoMateriaForm()
-        return render(request, 'ezmanagement/alteracao_materia_prima.html', {'form' : form})
+        return render(request, 'ezmanagement/alteracao/alteracao_materia_prima.html', {'form' : form})
 
 
 def remocao_funcionario(request):
@@ -223,12 +223,12 @@ def remocao_funcionario(request):
                 filialAssoc.save()
                 func.delete()
                 contrato.delete()
-                return render(request, 'ezmanagement/remocao_sucesso.html')
+                return render(request, 'ezmanagement/remocao/remocao_sucesso.html')
             else:
-                return render(request, 'ezmanagement/remocao_erro.html')
+                return render(request, 'ezmanagement/remocao/remocao_erro.html')
     else:
         form = ConsultaFisicaForm()
-        return render(request, 'ezmanagement/remocao_funcionario.html', {'form' : form})
+        return render(request, 'ezmanagement/remocao/remocao_funcionario.html', {'form' : form})
 
 def remocao_cliente(request):
     if request.method == "POST":
@@ -238,12 +238,12 @@ def remocao_cliente(request):
             cliente = consultar_cliente(cnpj)
             if cliente != None:
                 cliente.delete()
-                return render(request, 'ezmanagement/remocao_sucesso.html')
+                return render(request, 'ezmanagement/remocao/remocao_sucesso.html')
             else:
-                return render(request, 'ezmanagement/remocao_erro.html')
+                return render(request, 'ezmanagement/remocao/remocao_erro.html')
     else:
         form = ConsultaJuridicaForm()
-        return render(request, 'ezmanagement/remocao_cliente.html', {'form' : form})
+        return render(request, 'ezmanagement/remocao/remocao_cliente.html', {'form' : form})
 
 def consulta_funcionario(request):
     if request.method == "POST":
@@ -252,13 +252,13 @@ def consulta_funcionario(request):
             cpf = form.cleaned_data["cpf_P"]
             func = consultar_funcionario(cpf)
             if func != None:
-                return render(request, 'ezmanagement/informacoes_consulta.html', {'info' : func})
+                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : func})
             else:
-                return render(request, 'ezmanagement/consulta_erro.html')
+                return render(request, 'ezmanagement/consulta/consulta_erro.html')
 
     else:
         form = ConsultaFisicaForm()
-        return render(request, 'ezmanagement/consulta_funcionario.html', {'form' : form})
+        return render(request, 'ezmanagement/consulta/consulta_funcionario.html', {'form' : form})
 
 def consulta_cliente(request):
     if request.method == "POST":
@@ -267,10 +267,10 @@ def consulta_cliente(request):
             cnpj = form.cleaned_data["cnpj_P"]
             cliente = consultar_cliente(cnpj)
             if cliente != None:
-                return render(request, 'ezmanagement/informacoes_consulta.html', {'info' : cliente})
+                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : cliente})
             else:
-                return render(request, 'ezmanagement/consulta_erro.html')
+                return render(request, 'ezmanagement/consulta/consulta_erro.html')
 
     else:
         form = ConsultaJuridicaForm()
-        return render(request, 'ezmanagement/consulta_cliente.html', {'form' : form})
+        return render(request, 'ezmanagement/consulta/consulta_cliente.html', {'form' : form})
