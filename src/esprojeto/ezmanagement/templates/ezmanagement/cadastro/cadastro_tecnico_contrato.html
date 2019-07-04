@@ -1,6 +1,6 @@
 {% extends "ezmanagement/base.html" %}
 {% block content %}
-  <form class="cadastro" action="{% url 'cadastro_tecnico' %}" method="post">
+  <form class="cadastro" action="{% url 'cadastro_tecnico_contrato' %}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Cadastrar">

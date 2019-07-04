@@ -3,7 +3,7 @@
   <form class="consulta" action="{% url 'consulta_funcionario' %}" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" name="consultar" value="Consultar Funcionário">
+    <input type="submit" name="consultar" value="Consultar Contrato">
   </form>
   <a href="{% url 'consulta' %}">Voltar</a>
 

@@ -1,6 +1,20 @@
 {% extends "ezmanagement/base.html" %}
 {% block content %}
-  {{info}}
+  {{info | safe}}
+  <br>
+  <h3>Alteração</h3>
+  <form class="" action="{% url 'informacoes_consulta' %}" method="post">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" name="" value="Alterar">
+  </form>
+  <br>
+  {% if tipo == "Cliente" %}
+  <li> <a href="{% url 'remocao_cliente' %}">Remover {{ tipo }}</a></li>
+  {% endif %}
+  {% if tipo == "Contrato" %}
+  <li> <a href="{% url 'remocao_contrato' %}">Remover {{ tipo }}</a></li>
+  {% endif %}
   <li> <a href="{% url 'menu_inicial' %}">Voltar para o menu inicial</a> </li>
 
 {% endblock content %}

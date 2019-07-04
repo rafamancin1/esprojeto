@@ -17,11 +17,15 @@ class CadastroPessoaFisicaForm(CadastroPessoaForm):
     cpf_P = forms.CharField(label="CPF", max_length=11)
 
 class CadastroFuncForm(CadastroPessoaFisicaForm):
+    cnpj_filial = forms.CharField(label="CNPJ da filial", max_length=14)
     dataContratacao_Func = forms.DateTimeField(label="Data de contratação")
     salario_Func = forms.FloatField(label="Salário")
 
-class CadastroTecForm(CadastroFuncForm):
-    areaAtuacao = forms.CharField(label="Área de atuação")
+class CadastroContratoForm(CadastroFuncForm):
+    data_validade = forms.DateTimeField(label="Data de validade do contrato")
+
+class CadastroContratoTecnicoForm(CadastroContratoForm):
+    area_atuacao = forms.CharField(label="Área de atuação", max_length=50)
 
 class ConsultaFisicaForm(forms.Form):
     cpf_P = forms.CharField(label="CPF", max_length=11)
@@ -29,13 +33,15 @@ class ConsultaFisicaForm(forms.Form):
 class ConsultaJuridicaForm(forms.Form):
     cnpj_P = forms.CharField(label="CNPJ", max_length=14)
 
+class AlteracaoForm(forms.Form):
+    campo = forms.CharField(label="Informe o campo que deseja alterar", max_length=50)
+    novoValor = forms.CharField(label="Informe o novo valor deste campo", max_length=100)
+
 class AlteracaoFuncForm(forms.Form):
-    cpf_P = forms.CharField(label="CPF", max_length=11)
     campo = forms.CharField(label="Informe o campo que deseja alterar", max_length=50)
     novoValor = forms.CharField(label="Informe o novo valor deste campo", max_length=100)
 
 class AlteracaoClienteForm(forms.Form):
-    cnpj_P = forms.CharField(label="CNPJ", max_length=14)
     campo = forms.CharField(label="Informe o campo que deseja alterar", max_length=50)
     novoValor = forms.CharField(label="Informe o novo valor deste campo", max_length=100)
 

@@ -7,13 +7,14 @@ class Filial(models.Model):
     endereco = models.CharField(max_length=100)
     qtdFunc = models.IntegerField(default=0)
 
+    def __str__(self):
+        return "CNPJ: " + self.cnpjFilial + " qtd de func: " + str(self.qtdFunc)
+
 class Pessoa(models.Model):
     nome_P = models.CharField(max_length=50, default='')
     telefone_P = models.CharField(max_length=20,default='')
     endereco_P = models.CharField(max_length=100,default='')
     email_P = models.CharField(max_length=50,default='')
-    filialAssociada = models.ForeignKey(Filial, on_delete=models.CASCADE)
-    cnpjFilial = models.CharField(max_length=14, default='')
 
     class Meta:
         abstract = True
@@ -29,6 +30,7 @@ class Pessoa_Juridica(Pessoa):
         abstract = True
 
 class Funcionario(Pessoa_Fisica):
+    cnpj_filial = models.CharField(max_length=14, default='')
     dataContratacao_Func = models.DateTimeField('data de contratação', default=timezone.now())
     salario_Func = models.FloatField(default=1000.00)
 
@@ -40,17 +42,31 @@ class Funcionario(Pessoa_Fisica):
         abstract = True
 
 class Contrato(Funcionario):
-    data_validade = models.DateTimeField('data de validade', default=timezone.now())
+    data_validade = models.DateTimeField('Data de Validade', default=timezone.now())
+    filial_associada = models.ForeignKey(Filial, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        out = "<table border=1>"
+        out += "<tr><td><b>Nome</b></td><td>" + self.nome_P + "</td></tr>"
+        out += "<tr><td><b>CPF</b></td><td>" + self.cpf_P + "</td></tr>"
+        out += "<tr><td><b>Endereço</b></td><td>" + self.endereco_P + "</td></tr>"
+        out += "<tr><td><b>Telefone</b></td><td>" + self.telefone_P + "</td></tr>"
+        out += "<tr><td><b>E-mail</b></td><td>" + self.email_P + "</td></tr>"
+        out += "<tr><td><b>Data de validade</b></td><td>" + str(self.data_validade) + "</td></tr>"
+        out += "<tr><td><b>CNPJ da filial</b></td><td>" + self.cnpj_filial + "</td></tr>"
+
+        out += "</table>"
+        return out
 
 class Adm_Local(Funcionario):
     senha_adm = models.CharField(max_length=16,default='')
     def __str__(self):
-        return super().__str__(self)
+        return super().__str__()
 
 class Tecnico(Funcionario):
-    areaAtuacao = models.CharField(max_length=20,default='')
-    def __str__(self):
-        return super().__str__() + " " + self.areaAtuacao + "\n"
+    area_atuacao = models.CharField(max_length=20,default='')
+    contrato = models.OneToOneField(Contrato, on_delete=models.CASCADE, primary_key=True, default=None)
+
 
 class Representante(Funcionario):
     estado_atuacao = models.CharField(max_length=50,default='')
@@ -85,4 +101,14 @@ class Lote_Produto(models.Model):
     produto_assoc = models.ForeignKey(Produto, on_delete=models.CASCADE)
 
 class Cliente(Pessoa_Juridica):
-    pass
+    def __str__(self):
+        out = "<table border=1>"
+        out += "<tr><td><b>Nome</b></td><td>" + self.nome_P + "</td></tr>"
+        out += "<tr><td><b>CNPJ</b></td><td>" + self.cnpj_P + "</td></tr>"
+        out += "<tr><td><b>Endereço</b></td><td>" + self.endereco_P + "</td></tr>"
+        out += "<tr><td><b>Telefone</b></td><td>" + self.telefone_P + "</td></tr>"
+        out += "<tr><td><b>E-mail</b></td><td>" + self.email_P + "</td></tr>"
+
+
+        out += "</table>"
+        return out

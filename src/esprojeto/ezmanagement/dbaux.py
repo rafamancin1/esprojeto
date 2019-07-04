@@ -75,3 +75,7 @@ def lista_fornecedores():
         return Fornecedor.objects.all()
     except:
         return []
+
+def alterar_obj(obj_alt, campo, novoValor):
+    setattr(obj_alt, campo, novoValor)
+    obj_alt.save()

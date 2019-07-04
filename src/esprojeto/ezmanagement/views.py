@@ -16,12 +16,12 @@ def index(request):
             request.session['nomeFunc'] = email
             try:
                 func = Adm_Local.objects.get(email_P=email, senha_adm=senha)
-                request.session['CNPJ_FILIAL'] = func.filialAssociada.cnpjFilial
+                request.session['CNPJ_FILIAL'] = func.cnpj_filial
                 return render(request, 'ezmanagement/menu_inicial.html', {'nomeFunc' : email})
             except Adm_Local.DoesNotExist:
                 try:
                     func = Representante.objects.get(email_P=email, senha_repr=senha)
-                    request.session['CNPJ_FILIAL'] = func.cnpjFilial
+                    request.session['CNPJ_FILIAL'] = ''
                     return render(request, 'ezmanagement/menu_inicial.html', {'nomeFunc' : email})
                 except Representante.DoesNotExist:
                     form = LoginForm()
@@ -84,29 +84,32 @@ def relatorio(request):
 def cadastro_funcionario(request):
     return render(request, "ezmanagement/cadastro/cadastro_funcionario.html")
 
-def cadastro_tecnico(request):
+def cadastro_tecnico_contrato(request):
     if request.method == "POST":
-        form = CadastroTecForm(request.POST)
+        form = CadastroContratoTecnicoForm(request.POST)
         if form.is_valid():
-            func = Tecnico(**form.cleaned_data)
-            filialAssoc = consultar_filial(request.session['CNPJ_FILIAL'])
+            tec_dict = form.cleaned_data.copy()
+            contrato_dict = form.cleaned_data.copy()
+            del tec_dict['data_validade']
+            del contrato_dict['area_atuacao']
+            contrato = Contrato(**contrato_dict)
+            func = Tecnico(**tec_dict)
+            filialAssoc = consultar_filial(tec_dict['cnpj_filial'])
             if filialAssoc != None:
-                func.filialAssociada = filialAssoc
+                contrato.filial_associada = filialAssoc
+                contrato.save()
+                func.contrato = contrato
                 filialAssoc.qtdFunc += 1
                 filialAssoc.save()
                 func.save()
-                del form.cleaned_data['areaAtuacao']
-                contrato = Contrato(**form.cleaned_data)
-                contrato.filialAssociada = filialAssoc
-                contrato.save()
                 return render(request, 'ezmanagement/cadastro/cadastro_sucesso.html')
             else:
                 return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
         else:
             return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
     else:
-        form = CadastroTecForm()
-        return render(request, 'ezmanagement/cadastro/cadastro_tecnico.html', {'form' : form})
+        form = CadastroContratoTecnicoForm()
+        return render(request, 'ezmanagement/cadastro/cadastro_tecnico_contrato.html', {'form' : form})
 
 def cadastro_representante(request):
     pass
@@ -119,13 +122,10 @@ def cadastro_cliente(request):
         form = CadastroPessoaJuridicaForm(request.POST)
         if form.is_valid():
             cliente = Cliente(**form.cleaned_data)
-            filialAssoc = consultar_filial(request.session['CNPJ_FILIAL'])
-            if filialAssoc != None:
-                cliente.filialAssociada = filialAssoc
-                cliente.save()
-                return render(request, 'ezmanagement/cadastro/cadastro_sucesso.html')
-            else:
-                return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
+            cliente.save()
+            return render(request, 'ezmanagement/cadastro/cadastro_sucesso.html')
+        else:
+            return render(request, 'ezmanagement/cadastro/cadastro_erro.html')
     else:
         form = CadastroPessoaJuridicaForm()
         return render(request, 'ezmanagement/cadastro/cadastro_cliente.html', {'form' : form})
@@ -155,6 +155,66 @@ def alteracao_funcionario(request):
     else:
         form = AlteracaoFuncForm()
         return render(request, 'ezmanagement/alteracao/alteracao_funcionario.html', {'form' : form})
+
+def informacoes_consulta(request):
+    if request.method == "POST":
+        form = AlteracaoForm(request.POST)
+        if form.is_valid():
+            campo_trad = {
+                "Nome" : "nome_P",
+                "CPF"  : "cpf_P",
+                "CNPJ" : "cnpj_P",
+                "Telefone" : "telefone_P",
+                "Endereço" : "endereco_P",
+                "E-mail" : "email_P",
+                "Data de validade" : "data_validade",
+                "CNPJ da filial" : "cnpj_filial"
+            }
+            sucesso_alt = None
+            obj_alt = None
+            campo = form.cleaned_data["campo"]
+            novoValor = form.cleaned_data["novoValor"]
+            if request.session["tipoConsulta"] == "Cliente":
+                obj_alt = consultar_cliente(request.session["chave"])
+            elif request.session["tipoConsulta"] == "Contrato":
+                obj_alt = consultar_contrato(request.session["chave"])
+            else:
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
+            try:
+                campo = campo_trad[campo]
+                if campo == "cnpj_filial" and request.session["tipoConsulta"] == "Contrato":
+                    filial = consultar_filial(novoValor)
+                    if filial == None:
+                        return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
+                    else:
+                        obj_alt.filial_associada.qtdFunc -= 1
+                        obj_alt.filial_associada.save()
+                        filial.qtdFunc += 1
+                        filial.save()
+                        obj_alt.filial_associada = filial
+            except KeyError:
+                return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
+            alterar_obj(obj_alt, campo, novoValor)
+            if request.session["tipoConsulta"] == "Contrato":
+                alterar_obj(obj_alt.tecnico, campo, novoValor)
+            return render(request, 'ezmanagement/alteracao/alteracao_sucesso.html')
+        else:
+            return render(request, 'ezmanagement/alteracao/alteracao_erro.html')
+    else:
+        form = AlteracaoForm()
+        return render(request, 'ezmanagement/alteracao/consulta_erro.html')
+
+def remocao_contrato(request):
+    contrato = consultar_contrato(request.session['chave'])
+    if contrato != None:
+        contrato.filial_associada.qtdFunc -= 1
+        contrato.filial_associada.save()
+        contrato.tecnico.delete()
+        contrato.delete()
+        return render(request, 'ezmanagement/remocao/remocao_sucesso.html')
+    else:
+        return render(request, 'ezmanagement/remocao/remocao_erro.html')
+
 
 def alteracao_cliente(request):
     if request.method == "POST":
@@ -231,28 +291,23 @@ def remocao_funcionario(request):
         return render(request, 'ezmanagement/remocao/remocao_funcionario.html', {'form' : form})
 
 def remocao_cliente(request):
-    if request.method == "POST":
-        form = ConsultaJuridicaForm(request.POST)
-        if form.is_valid():
-            cnpj = form.cleaned_data["cnpj_P"]
-            cliente = consultar_cliente(cnpj)
-            if cliente != None:
-                cliente.delete()
-                return render(request, 'ezmanagement/remocao/remocao_sucesso.html')
-            else:
-                return render(request, 'ezmanagement/remocao/remocao_erro.html')
+    cliente = consultar_cliente(request.session["chave"])
+    if cliente != None:
+        cliente.delete()
+        return render(request, 'ezmanagement/remocao/remocao_sucesso.html')
     else:
-        form = ConsultaJuridicaForm()
-        return render(request, 'ezmanagement/remocao/remocao_cliente.html', {'form' : form})
+        return render(request, 'ezmanagement/remocao/remocao_erro.html')
 
 def consulta_funcionario(request):
     if request.method == "POST":
         form = ConsultaFisicaForm(request.POST)
         if form.is_valid():
             cpf = form.cleaned_data["cpf_P"]
-            func = consultar_funcionario(cpf)
+            func = consultar_contrato(cpf)
             if func != None:
-                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : func})
+                request.session["tipoConsulta"] = "Contrato"
+                request.session["chave"] = cpf
+                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : func, 'tipo' : "Contrato", 'form' : AlteracaoForm()})
             else:
                 return render(request, 'ezmanagement/consulta/consulta_erro.html')
 
@@ -267,7 +322,10 @@ def consulta_cliente(request):
             cnpj = form.cleaned_data["cnpj_P"]
             cliente = consultar_cliente(cnpj)
             if cliente != None:
-                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : cliente})
+                request.session["tipoConsulta"] = "Cliente"
+                request.session["chave"] = cnpj
+                return render(request, 'ezmanagement/consulta/informacoes_consulta.html', {'info' : cliente, 'form' : AlteracaoClienteForm(),
+                    'tipo' : request.session["tipoConsulta"]})
             else:
                 return render(request, 'ezmanagement/consulta/consulta_erro.html')
 
