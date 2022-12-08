@@ -1,6 +1,6 @@
 apsw==3.16.2.post1
 ccsm==0.9.13.1
-certifi==2018.11.29
+certifi==2022.12.7
 chardet==3.0.4
 CherryPy==8.9.1
 compizconfig-python==0.9.13.1
